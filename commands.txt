@@ -1,0 +1,39 @@
+creating skeleton of bna
+
+yo hyperledger-composer:businessnetwork
+
+
+
+cd ~/fabric-dev-servers/
+./stopFabric.sh
+./teardownFabric.sh
+composer card delete --card admin@sabre_hackathon
+
+
+cd ~/fabric-dev-servers/
+export FABRIC_VERSION=hlfv11
+./startFabric.sh
+./createPeerAdminCard.sh
+
+
+cd
+cd sabre_hackathon
+composer archive create -t dir -n .
+composer network install --card PeerAdmin@hlfv1 --archiveFile sabre_hackathon@0.0.1.bna
+composer network start --networkName sabre_hackathon --networkVersion 0.0.1 --networkAdmin admin --networkAdminEnrollSecret adminpw --card PeerAdmin@hlfv1 --file networkadmin.card
+composer card import --file networkadmin.card
+composer network ping --card admin@sabre_hackathon
+composer-rest-server
+
+to resart the previous rest server
+composer-rest-server -c admin@sabre_hackathon -n never -u true -d n -w true
+
+angularjs
+cd sabre_hackathon/
+yo hyperledger-composer:angular
+
+
+cd sabre_hackathon/
+npm start
+
+composer network upgrade -n sabre_hackathon -V 0.02 -c networkadmin.card

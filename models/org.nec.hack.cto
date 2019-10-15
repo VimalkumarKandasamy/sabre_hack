@@ -1,0 +1,73 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * Write your model definitions here
+ */
+
+namespace org.sabre.hack
+
+
+participant Driver identified by driver_id {
+  o String driver_id
+  o String driver_name
+  o String licence_num
+  o String remarks
+}
+
+asset Vehicle identified by vehicle_num {
+ o String vehicle_num
+ o String make_model
+ o Double km_driven
+ o String insurance_validity
+ o Double tyre_pressure
+ o Double oil_status
+ o String last_serviced_date
+ o Double fuel_status
+ o String remarks
+}
+
+
+participant Trip identified by trip_id {
+  o String trip_id
+  -->Vehicle vehicle
+  -->Driver driver
+  o Double km_travelled
+  o String remarks
+}
+
+
+
+transaction Update_insurance{
+  -->Vehicle vehicle
+  o String insurance_validity
+}
+
+transaction Update_maintenance{
+  -->Vehicle vehicle
+  o String serviced_date 
+}
+
+transaction Update_readings{
+  -->Vehicle vehicle
+  o Double tyre_pressure
+  o Double oil_status
+  o Double fuel_status
+}
+
+transaction Update_trip{
+  -->Vehicle vehicle
+  -->Driver driver
+  o Double km_travelled
+}
